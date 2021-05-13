@@ -166,15 +166,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             String last_name = object.getString("last_name");
                             String email = object.getString("email");
                             String name = first_name + " " + last_name;
-                            User user = new User();
-
-                            user.setName(name);
-                            user.setEmail(email);
-                            String password = "123456";
-                            user.setPassword(password);
-                            databaseHelper.addUser(user);
-                            Preference.saveEmail(email, getApplicationContext());
-                            Preference.savePassword(password, getApplicationContext());
+                            if (!databaseHelper.checkUser(email)) {
+                                User user = new User();
+                                user.setName(name);
+                                user.setEmail(email);
+                                String password = "123456";
+                                user.setPassword(password);
+                                databaseHelper.addUser(user);
+                                Preference.saveEmail(email, getApplicationContext());
+                                Preference.savePassword(password, getApplicationContext());
+                            }
+                            else
+                            {
+                                Intent homeIntent = new Intent(LoginActivity.this, UsersActivity.class);
+                                startActivity(homeIntent);
+                            }
                             String id = object.getString("id");
                             String image_url = "https://graph.facebook.com/"+id+"/picture?type=normal";
 

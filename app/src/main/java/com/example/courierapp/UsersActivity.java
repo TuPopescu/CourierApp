@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.login.LoginManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -76,6 +77,7 @@ public class UsersActivity extends AppCompatActivity implements BottomNavigation
                 databaseHelper.deleteAllDeliveries();
                 Preference.savePassword(null, this);
                 Preference.saveEmail(null, this);
+                LoginManager.getInstance().logOut();
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
                 break;
