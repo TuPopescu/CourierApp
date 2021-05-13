@@ -64,6 +64,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private CircleImageView circleImageView;
     private TextView txtEmail;
     private TextView txtName;
+    private int t = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -85,11 +86,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         checkLoginStatus();
 
+
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                /*initDeliveries();
+                t = 1;
                 Intent homeIntent = new Intent(LoginActivity.this, UsersActivity.class);
                 startActivity(homeIntent);
+                finish();*/
             }
 
             @Override
@@ -102,7 +107,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             }
         });
-
+        //if(t==0){
         initViews();
         initListeners();
         initObjects();
@@ -199,11 +204,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         databaseHelper.addUser(user);
                         Preference.saveEmail(email, getApplicationContext());
                         Preference.savePassword(password, getApplicationContext());
+                        Intent homeIntent = new Intent(LoginActivity.this, UsersActivity.class);
+                        startActivity(homeIntent);
+                        finish();
                     }
                     else
                     {
                         Intent homeIntent = new Intent(LoginActivity.this, UsersActivity.class);
                         startActivity(homeIntent);
+                        finish();
                     }
                     String id = object.getString("id");
                     String image_url = "https://graph.facebook.com/"+id+"/picture?type=normal";
