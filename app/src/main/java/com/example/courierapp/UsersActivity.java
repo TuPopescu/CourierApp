@@ -43,21 +43,21 @@ public class UsersActivity extends AppCompatActivity implements BottomNavigation
                         .replace(R.id.fragment_container, HomeFragment.class, null)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit();
-                break;
+                return true;
             case R.id.Profile:
                 getSupportFragmentManager().beginTransaction()
                         .setReorderingAllowed(true)
                         .replace(R.id.fragment_container, ProfileFragment.class, null)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit();
-                break;
+                return true;
             case R.id.Deliveries:
                 getSupportFragmentManager().beginTransaction()
                         .setReorderingAllowed(true)
                         .replace(R.id.fragment_container, DeliveriesFragment.class, null)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit();
-                break;
+                return true;
             case R.id.log_out:
                 databaseHelper.deleteAllDeliveries();
                 Preference.savePassword(null, this);
@@ -65,7 +65,7 @@ public class UsersActivity extends AppCompatActivity implements BottomNavigation
                 LoginManager.getInstance().logOut();
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
-                break;
+                return true;
         }
         return false;
     }

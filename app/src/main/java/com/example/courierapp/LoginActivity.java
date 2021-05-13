@@ -2,6 +2,10 @@ package com.example.courierapp;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.app.NotificationCompat;
 import androidx.core.widget.NestedScrollView;
 
 import com.bumptech.glide.Glide;
@@ -64,6 +69,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private CircleImageView circleImageView;
     private TextView txtEmail;
     private TextView txtName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){

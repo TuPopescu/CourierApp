@@ -21,8 +21,8 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         requireActivity().setTitle("Profile");
 
-        TextView name = (TextView) view.findViewById(R.id.user_name);
-        TextView email = (TextView) view.findViewById(R.id.user_email);
+        TextView name = view.findViewById(R.id.user_name);
+        TextView email = view.findViewById(R.id.user_email);
         name.setText(Preference.getName(getActivity()));
         email.setText(Preference.getEmail(getActivity()));
 

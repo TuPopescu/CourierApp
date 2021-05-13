@@ -23,7 +23,6 @@
     <string name="text_member">Already a member? Login to your account</string>
     <string name="home">Home</string>
     <string name="profile">Profile</string>
-    <string name="pending_deliveries">Pending Deliveries</string>
     <string name="deliveries">Deliveries</string>
     <string name="logout">Logout</string>
     <!-- TODO: Remove or change this placeholder text -->
