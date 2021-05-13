@@ -33,4 +33,18 @@ public class Preference {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString(Constants.KEY_PASSWORD, null);
     }
+
+    public static boolean saveName(String name, Context context){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor preferencesEditor = preferences.edit();
+        preferencesEditor.putString(Constants.KEY_NAME, name);
+        preferencesEditor.apply();
+        return true;
+    }
+
+    public static String getName(Context context){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(Constants.KEY_NAME, null);
+    }
+
 }

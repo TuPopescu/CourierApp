@@ -2,7 +2,6 @@ package com.example.courierapp;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,10 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.widget.NestedScrollView;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -26,10 +21,8 @@ import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.appevents.AppEventsLogger;
 
 
 import com.facebook.login.LoginResult;
@@ -43,10 +36,8 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private final AppCompatActivity activity = LoginActivity.this;
@@ -92,8 +83,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         callbackManager = CallbackManager.Factory.create();
         loginButton.setPermissions(Arrays.asList("email","public_profile"));
 
-
-
         checkLoginStatus();
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -117,95 +106,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initViews();
         initListeners();
         initObjects();
+        initDeliveries();
     }
 
     private void initViews(){
-        nestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollView);
+        nestedScrollView = findViewById(R.id.nestedScrollView);
 
-        textInputLayoutEmail = (TextInputLayout) findViewById(R.id.textInputLayoutEmail);
-        textInputLayoutPassword = (TextInputLayout) findViewById(R.id.textInputLayoutPassword);
+        textInputLayoutEmail = findViewById(R.id.textInputLayoutEmail);
+        textInputLayoutPassword = findViewById(R.id.textInputLayoutPassword);
 
-        textInputEditTextEmail = (TextInputEditText) findViewById(R.id.textInputEditTextEmail);
-        textInputEditTextPassword = (TextInputEditText) findViewById(R.id.textInputEditTextPassword);
+        textInputEditTextEmail = findViewById(R.id.textInputEditTextEmail);
+        textInputEditTextPassword = findViewById(R.id.textInputEditTextPassword);
 
-        appCompatButtonLogin = (AppCompatButton) findViewById(R.id.appCompatButtonLogin);
+        appCompatButtonLogin = findViewById(R.id.appCompatButtonLogin);
 
-
-
-        textViewLinkRegister = (AppCompatTextView) findViewById(R.id.textViewLinkRegister);
-        textViewLinkForgotPassword = (AppCompatTextView) findViewById(R.id.forgotPassword);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
-        callbackManager.onActivityResult(requestCode,resultCode,data);
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    AccessTokenTracker tokenTracker = new AccessTokenTracker() {
-        @Override
-        protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-            if (currentAccessToken==null)
-            {
-                txtName.setText("");
-                txtEmail.setText("");
-                circleImageView.setImageResource(0);
-                Toast.makeText(LoginActivity.this,"User Logged out",Toast.LENGTH_LONG).show();
-            }
-            else
-                loadUserProfile(currentAccessToken);
-        }
-    };
-
-    private void loadUserProfile(AccessToken newAccessToken){
-        GraphRequest request = GraphRequest.newMeRequest(newAccessToken, new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        try {
-                            String first_name = object.getString("first_name");
-                            String last_name = object.getString("last_name");
-                            String email = object.getString("email");
-                            String name = first_name + " " + last_name;
-                            if (!databaseHelper.checkUser(email)) {
-                                User user = new User();
-                                user.setName(name);
-                                user.setEmail(email);
-                                String password = "123456";
-                                user.setPassword(password);
-                                databaseHelper.addUser(user);
-                                Preference.saveEmail(email, getApplicationContext());
-                                Preference.savePassword(password, getApplicationContext());
-                            }
-                            else
-                            {
-                                Intent homeIntent = new Intent(LoginActivity.this, UsersActivity.class);
-                                startActivity(homeIntent);
-                            }
-                            String id = object.getString("id");
-                            String image_url = "https://graph.facebook.com/"+id+"/picture?type=normal";
-
-                            txtEmail.setText(email);
-                            txtName.setText(first_name + " " + last_name);
-
-                            RequestOptions requestOptions = new RequestOptions();
-                            requestOptions.dontAnimate();
-
-                            Glide.with(LoginActivity.this).load(image_url).into(circleImageView);
-
-                        } catch (JSONException jsonException) {
-                            jsonException.printStackTrace();
-                        }
-                    }
-                });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields","first_name,last_name,email,id");
-        request.setParameters(parameters);
-        request.executeAsync();
-    }
-
-    private void checkLoginStatus(){
-        if (AccessToken.getCurrentAccessToken()!=null)
-            loadUserProfile(AccessToken.getCurrentAccessToken());
+        textViewLinkRegister = findViewById(R.id.textViewLinkRegister);
+        textViewLinkForgotPassword = findViewById(R.id.forgotPassword);
     }
 
     private void initListeners(){
@@ -217,6 +133,103 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void initObjects(){
         databaseHelper = new DatabaseHelper(activity);
         inputValidation = new InputValidation(activity);
+    }
+
+    private void initDeliveries(){
+        Delivery delivery;
+        delivery = new Delivery(0, "Mihaela Stefania", "Iolanda Dacian", "Bulevardul Timisoara nr. 17A");
+        databaseHelper.addDelivery(delivery);
+        delivery = new Delivery(0, "Radu Dorinel", "Matei Cosmin", "Piata Alexandru Lahovari 1");
+        databaseHelper.addDelivery(delivery);
+        delivery = new Delivery(0, "Ana Maria Simona", "Manuel Cristian", "Calea Calarasi nr. 172");
+        databaseHelper.addDelivery(delivery);
+        delivery = new Delivery(0, "Isac Cezara", "Aurel Filip", "Soseaua Pantelimon nr. 340-342");
+        databaseHelper.addDelivery(delivery);
+        delivery = new Delivery(0, "Alexandru Lazar", "Paul Miron", "Strada Garleanu Emil nr. 13");
+        databaseHelper.addDelivery(delivery);
+        delivery = new Delivery(0, "Ilie Iuliana", "Carmen Natalia", "Strada Frumoasa 54");
+        databaseHelper.addDelivery(delivery);
+        delivery = new Delivery(0, "Constantin Cosmin", "Manuela Cristiana", "Strada Pargarilor 63");
+        databaseHelper.addDelivery(delivery);
+        delivery = new Delivery(0, "Viorela Valeria", "Livia Dana", "Strada Brancusi Constantin nr. 23");
+        databaseHelper.addDelivery(delivery);
+        delivery = new Delivery(0, "Alexandru Narcisa", "Ioana Florentin", "Strada Pajurei nr. 15");
+        databaseHelper.addDelivery(delivery);
+        delivery = new Delivery(0, "Mihaela Costel", "Eugen Ieronim", "Strada Lipscani nr. 19");
+        databaseHelper.addDelivery(delivery);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        callbackManager.onActivityResult(requestCode,resultCode,data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    AccessTokenTracker tokenTracker = new AccessTokenTracker() {
+        @Override
+        protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+        if (currentAccessToken==null)
+        {
+            txtName.setText("");
+            txtEmail.setText("");
+            circleImageView.setImageResource(0);
+            Toast.makeText(LoginActivity.this,"User Logged out",Toast.LENGTH_LONG).show();
+        }
+        else
+            loadUserProfile(currentAccessToken);
+        }
+    };
+
+    private void loadUserProfile(AccessToken newAccessToken){
+        GraphRequest request = GraphRequest.newMeRequest(newAccessToken, new GraphRequest.GraphJSONObjectCallback() {
+
+            @Override
+            public void onCompleted(JSONObject object, GraphResponse response) {
+                try {
+                    String first_name = object.getString("first_name");
+                    String last_name = object.getString("last_name");
+                    String email = object.getString("email");
+                    String name = first_name + " " + last_name;
+                    if (!databaseHelper.checkUser(email)) {
+                        User user = new User();
+                        user.setName(name);
+                        user.setEmail(email);
+                        String password = "123456";
+                        user.setPassword(password);
+                        databaseHelper.addUser(user);
+                        Preference.saveEmail(email, getApplicationContext());
+                        Preference.savePassword(password, getApplicationContext());
+                    }
+                    else
+                    {
+                        Intent homeIntent = new Intent(LoginActivity.this, UsersActivity.class);
+                        startActivity(homeIntent);
+                    }
+                    String id = object.getString("id");
+                    String image_url = "https://graph.facebook.com/"+id+"/picture?type=normal";
+
+                    txtEmail.setText(email);
+                    txtName.setText(first_name + " " + last_name);
+
+                    RequestOptions requestOptions = new RequestOptions();
+                    requestOptions.dontAnimate();
+
+                    Glide.with(LoginActivity.this).load(image_url).into(circleImageView);
+
+                } catch (JSONException jsonException) {
+                    jsonException.printStackTrace();
+                }
+            }
+        });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields","first_name,last_name,email,id");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
+    private void checkLoginStatus(){
+        if (AccessToken.getCurrentAccessToken()!=null)
+            loadUserProfile(AccessToken.getCurrentAccessToken());
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -253,6 +266,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (databaseHelper.checkUser(email, password)){
             Preference.saveEmail(email, this);
+            Preference.saveName(email, this);
             Preference.savePassword(password, this);
             Intent accountsIntent = new Intent(activity, UsersActivity.class);
             accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());

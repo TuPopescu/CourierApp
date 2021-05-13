@@ -6,11 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.fragment.app.Fragment;
-import androidx.work.Worker;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
     private static final int DATABASE_VERSION = 1;
@@ -158,21 +154,4 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.execSQL("DELETE FROM " + TABLE_DELIVERY);
         db.close();
     }
-
-    /*public String getUsername(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM user", null);
-        ArrayList<User> userinfo = new ArrayList();
-        String user_name = null;
-        if (cursor.moveToFirst()){
-            do{
-                int id = cursor.getColumnIndex("COLUMN_USER_ID");
-                user_name = cursor.getString(1);
-                String user_email = cursor.getString(2);
-                User user = new User();
-            }while (cursor.moveToNext());
-        }
-        cursor.close();
-        return user_name;
-    }*/
 }

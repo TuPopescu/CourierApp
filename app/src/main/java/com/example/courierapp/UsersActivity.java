@@ -2,76 +2,61 @@ package com.example.courierapp;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.facebook.login.LoginManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
-
-
 public class UsersActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
     private final AppCompatActivity activity = UsersActivity.this;
-    RecyclerView recyclerView;
     DatabaseHelper databaseHelper = new DatabaseHelper(activity);
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
         BottomNavigationView navigationView = findViewById(R.id.bottom_navigation);
         navigationView.setOnNavigationItemSelectedListener(this);
 
-        recyclerView = findViewById(R.id.recycle_menu);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Delivery delivery = new Delivery(0, "Clare Arellano", "Talha Carrillo", "2493  Boone Crockett Lane");
-                databaseHelper.addDelivery(delivery);
-            }
-        }, 10000);
-
-        ArrayList<Delivery> deliveryList = databaseHelper.getDeliveryData();
-        RecyclerViewDeliveryAdapter recyclerViewDeliveryAdapter = new RecyclerViewDeliveryAdapter(deliveryList);
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(recyclerViewDeliveryAdapter);
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.fragment_container, HomeFragment.class, null)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
     }
-
 
     @SuppressLint("NonConstantResourceId")
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item){
-        Fragment fragment = null;
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.Home:
-                Intent homeIntent = new Intent(this, UsersActivity.class);
-                startActivity(homeIntent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+                getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.fragment_container, HomeFragment.class, null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
                 break;
             case R.id.Profile:
-                fragment = new ProfileFragment();
-                break;
-            case R.id.PendingDeliveries:
-                fragment = new PendingDeliveriesFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.fragment_container, ProfileFragment.class, null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
                 break;
             case R.id.Deliveries:
-                fragment = new DeliveriesFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.fragment_container, DeliveriesFragment.class, null)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
                 break;
             case R.id.log_out:
                 databaseHelper.deleteAllDeliveries();
@@ -82,18 +67,25 @@ public class UsersActivity extends AppCompatActivity implements BottomNavigation
                 startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
                 break;
         }
-        return loadFragment(fragment);
+        return false;
     }
 
-    private boolean loadFragment(Fragment fragment){
-        if (fragment != null){
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    //.replace(R.id.frame_container, fragment)
-                    .add(R.id.fragment_profile, ProfileFragment.class, null)
-                    .commit();
-            return true;
-        }
-        return false;
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Closing Activity")
+                .setMessage("Are you sure you want to logout?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        databaseHelper.deleteAllDeliveries();
+                        finish();
+                    }
+
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 }

@@ -1,35 +1,31 @@
 package com.example.courierapp;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
 public class ProfileFragment extends Fragment {
-
-    /*public String name(){
-
-        Context context = getContext();
-        DatabaseHelper db = new DatabaseHelper(context);
-        String name = db.getUsername();
-        return name;
-    }*/
+    public ProfileFragment(){
+        super(R.layout.fragment_profile);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, null);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
         requireActivity().setTitle("Profile");
-        //name();
 
-        //TextView name = (TextView)findViewById(R.id.user_name);
-        //name.setText(name + "");
+        TextView name = (TextView) view.findViewById(R.id.user_name);
+        TextView email = (TextView) view.findViewById(R.id.user_email);
+        name.setText(Preference.getName(getActivity()));
+        email.setText(Preference.getEmail(getActivity()));
+
         return view;
     }
 }

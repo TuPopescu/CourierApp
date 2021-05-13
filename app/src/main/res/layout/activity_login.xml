@@ -115,7 +115,6 @@
 
             </LinearLayout>
 
-
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewLinkRegister"
                 android:layout_width="match_parent"

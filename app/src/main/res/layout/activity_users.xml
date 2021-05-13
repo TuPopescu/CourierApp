@@ -6,18 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".UsersActivity">
 
-    <FrameLayout
-        android:id="@+id/frame_container"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycle_menu"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="5dp"
-            android:orientation="vertical"/>
-    </FrameLayout>
+        android:layout_above="@id/bottom_navigation"/>
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

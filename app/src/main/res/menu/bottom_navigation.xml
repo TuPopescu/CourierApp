@@ -11,11 +11,6 @@
         android:title="@string/profile"/>
 
     <item
-        android:id="@+id/PendingDeliveries"
-        android:icon="@drawable/pending"
-        android:title="@string/pending_deliveries"/>
-
-    <item
         android:id="@+id/Deliveries"
         android:icon="@drawable/deliveries"
         android:title="@string/deliveries"/>
