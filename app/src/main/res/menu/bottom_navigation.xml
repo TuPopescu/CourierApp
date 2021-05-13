@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/Home"
+        android:icon="@drawable/home"
+        android:title="@string/home"/>
+
+    <item
+        android:id="@+id/Profile"
+        android:icon="@drawable/profile"
+        android:title="@string/profile"/>
+
+    <item
+        android:id="@+id/PendingDeliveries"
+        android:icon="@drawable/pending"
+        android:title="@string/pending_deliveries"/>
+
+    <item
+        android:id="@+id/Deliveries"
+        android:icon="@drawable/deliveries"
+        android:title="@string/deliveries"/>
+
+    <item
+        android:id="@+id/log_out"
+        android:icon="@drawable/exit"
+        android:title="@string/logout"/>
+</menu>

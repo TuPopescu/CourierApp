@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">CourierApp</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="text_login">Login</string>
+    <string name="text_register">Register</string>
+    <string name="error_message_name">Enter Full Name</string>
+    <string name="error_message_email">Enter Valid Email Address</string>
+    <string name="error_message_password">Enter Password</string>
+    <string name="success_message">Registration Successful</string>
+    <string name="success_login">Login Successful</string>
+    <string name="text_not_member">No account? Create one</string>
+    <string name="text_already_member">Already a member? Login to your account</string>
+    <string name="error_email_exists">Email Address already exists</string>
+    <string name="error_password_match">Passwords do not match</string>
+    <string name="error_valid_email_password">Wrong Email or Password</string>
+    <string name="text_member">Already a member? Login to your account</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="pending_deliveries">Pending Deliveries</string>
+    <string name="deliveries">Deliveries</string>
+    <string name="logout">Logout</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
