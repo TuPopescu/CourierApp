@@ -2,7 +2,9 @@ package com.example.courierapp;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
@@ -26,6 +28,7 @@ public class UsersActivity extends AppCompatActivity implements BottomNavigation
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
         BottomNavigationView navigationView = findViewById(R.id.bottom_navigation);
