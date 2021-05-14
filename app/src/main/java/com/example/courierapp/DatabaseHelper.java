@@ -149,6 +149,31 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return deliveryList;
     }
 
+    public String getUserName(String email){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {
+                COLUMN_USER_NAME
+        };
+        String selection = COLUMN_USER_EMAIL + " = ?";
+        String[] selectionArgs = { email };
+        Cursor cursor = db.query(TABLE_USER,
+                columns,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null);
+        String name = "";
+
+        if (cursor.moveToFirst()){
+            do{
+                name = cursor.getString(0);
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+        return name;
+    }
+
     public void deleteAllDeliveries(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_DELIVERY);

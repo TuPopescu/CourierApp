@@ -195,14 +195,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     String last_name = object.getString("last_name");
                     String email = object.getString("email");
                     String name = first_name + " " + last_name;
+                    String password = "123456";
                     if (!databaseHelper.checkUser(email)) {
                         User user = new User();
                         user.setName(name);
                         user.setEmail(email);
-                        String password = "123456";
                         user.setPassword(password);
                         databaseHelper.addUser(user);
                         Preference.saveEmail(email, getApplicationContext());
+                        Preference.saveName(name, getApplicationContext());
                         Preference.savePassword(password, getApplicationContext());
                         Intent homeIntent = new Intent(LoginActivity.this, UsersActivity.class);
                         startActivity(homeIntent);
@@ -210,6 +211,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
                     else
                     {
+                        Preference.saveEmail(email, getApplicationContext());
+                        Preference.saveName(name, getApplicationContext());
+                        Preference.savePassword(password, getApplicationContext());
                         Intent homeIntent = new Intent(LoginActivity.this, UsersActivity.class);
                         startActivity(homeIntent);
                         finish();
@@ -275,7 +279,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (databaseHelper.checkUser(email, password)){
             Preference.saveEmail(email, this);
-            Preference.saveName(email, this);
+            Preference.saveName(databaseHelper.getUserName(email), this);
             Preference.savePassword(password, this);
             Intent accountsIntent = new Intent(activity, UsersActivity.class);
             accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
