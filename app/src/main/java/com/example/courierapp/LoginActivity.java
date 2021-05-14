@@ -230,7 +230,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v){
         switch (v.getId()){
             case R.id.appCompatButtonLogin:
-                displayNotification(v);
                 verifyFromSQLite();
                 break;
             case R.id.textViewLinkRegister:
@@ -262,6 +261,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Preference.saveEmail(email, this);
             Preference.saveName(databaseHelper.getUserName(email), this);
             Preference.savePassword(password, this);
+            displayNotification();
             Intent accountsIntent = new Intent(activity, UsersActivity.class);
             accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
             emptyInputEditText();
@@ -275,7 +275,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private final String CHANNEL_ID = "personal_notifications";
     private final int NOTIFICATION_id = 100;
 
-    public void displayNotification(View view) {
+    public void displayNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this,CHANNEL_ID);
         builder.setSmallIcon(R.drawable.ic_login_notification);
         builder.setContentTitle("Login Success");
