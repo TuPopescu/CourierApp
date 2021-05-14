@@ -78,6 +78,7 @@
                 android:layout_marginTop="40dp"
                 android:background="@color/primaryTextHintColor"
                 android:text="@string/text_login"
+                android:onClick="displayNotification"
                 android:textColor="@color/primaryTextColor" />
 
             <LinearLayout

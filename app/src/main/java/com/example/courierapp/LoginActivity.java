@@ -2,14 +2,9 @@ package com.example.courierapp;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -17,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.widget.NestedScrollView;
 
 import com.bumptech.glide.request.RequestOptions;
@@ -234,6 +230,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v){
         switch (v.getId()){
             case R.id.appCompatButtonLogin:
+                displayNotification(v);
                 verifyFromSQLite();
                 break;
             case R.id.textViewLinkRegister:
@@ -273,6 +270,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         else {
             Snackbar.make(nestedScrollView, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG).show();
         }
+    }
+
+    private final String CHANNEL_ID = "personal_notifications";
+    private final int NOTIFICATION_id = 100;
+
+    public void displayNotification(View view) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,CHANNEL_ID);
+        builder.setSmallIcon(R.drawable.ic_login_notification);
+        builder.setContentTitle("Login Success");
+        builder.setContentText("You have logged in successfully!");
+        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+        notificationManagerCompat.notify(NOTIFICATION_id,builder.build());
     }
 
     private void emptyInputEditText(){
