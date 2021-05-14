@@ -9,15 +9,19 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
     RecyclerView recyclerView;
     DatabaseHelper databaseHelper;
+
 
     public HomeFragment() {
         super(R.layout.fragment_home);
@@ -39,6 +43,32 @@ public class HomeFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(recyclerViewAdapter);
 
+        this.configureOnClickRecyclerView();
+
         return view;
+    }
+
+    private void configureOnClickRecyclerView(){
+        ItemClickSupport.addTo(recyclerView, R.layout.fragment_home)
+                .setOnItemClickListener(new ItemClickSupport.OnItemClickListener(){
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v){
+                        ArrayList<Delivery> deliveryList = databaseHelper.getDeliveryData();
+                        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(deliveryList);
+                        Delivery delivery = recyclerViewAdapter.getDelivery(position);
+                        Toast.makeText(getContext(), "You selected delivery on " + delivery.getAddress(), Toast.LENGTH_SHORT).show();
+
+                        DeliveryInfoFragment nextFrag= new DeliveryInfoFragment();
+                        Bundle args = new Bundle();
+                        args.putString("SenderName", delivery.getSender_name());
+                        args.putString("ReceiverName", delivery.getReceiver_name());
+                        args.putString("Address", delivery.getAddress());
+                        nextFrag.setArguments(args);
+                        requireActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container, nextFrag, null)
+                                .addToBackStack(null)
+                                .commit();
+                    }
+                });
     }
 }
