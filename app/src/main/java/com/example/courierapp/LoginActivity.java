@@ -66,10 +66,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private CallbackManager callbackManager;
     private LoginButton loginButton;
 
-    private CircleImageView circleImageView;
-    private TextView txtEmail;
-    private TextView txtName;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -82,9 +78,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         loginButton = findViewById(R.id.login_button);
-        circleImageView = findViewById(R.id.profile_image);
-        txtName = findViewById(R.id.fbName);
-        txtEmail = findViewById(R.id.user_email);
 
         callbackManager = CallbackManager.Factory.create();
         loginButton.setPermissions(Arrays.asList("email","public_profile"));
@@ -175,9 +168,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
         if (currentAccessToken==null)
         {
-            txtName.setText("");
-            txtEmail.setText("");
-            circleImageView.setImageResource(0);
             Toast.makeText(LoginActivity.this,"User Logged out",Toast.LENGTH_LONG).show();
         }
         else
@@ -196,6 +186,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     String email = object.getString("email");
                     String name = first_name + " " + last_name;
                     String password = "123456";
+                    String id = object.getString("id");
                     if (!databaseHelper.checkUser(email)) {
                         User user = new User();
                         user.setName(name);
@@ -218,16 +209,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         startActivity(homeIntent);
                         finish();
                     }
-                    String id = object.getString("id");
-                    String image_url = "https://graph.facebook.com/"+id+"/picture?type=normal";
 
-                    txtEmail.setText(email);
-                    txtName.setText(first_name + " " + last_name);
 
                     RequestOptions requestOptions = new RequestOptions();
                     requestOptions.dontAnimate();
 
-                    Glide.with(LoginActivity.this).load(image_url).into(circleImageView);
 
                 } catch (JSONException jsonException) {
                     jsonException.printStackTrace();
