@@ -78,6 +78,7 @@
                 android:layout_marginTop="40dp"
                 android:background="@color/primaryTextHintColor"
                 android:text="@string/text_login"
+                android:onClick="displayNotification"
                 android:textColor="@color/primaryTextColor" />
 
             <LinearLayout
@@ -86,26 +87,6 @@
                 android:orientation="vertical"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/profile_image"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center"
-                    app:civ_border_width="2dp"
-                    android:layout_marginBottom="2dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:id="@+id/fbName"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:id="@+id/user_email"/>
 
                 <com.facebook.login.widget.LoginButton
                     android:id="@+id/login_button"
